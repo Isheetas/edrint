@@ -49,8 +49,7 @@ func (l *LossComputer) Name() string {
 }
 
 
-// media detection
-// content type field
+// Must implement: method from parent class
 func (l *LossComputer) OnFlowPacket(p common.Packet) {
 	if (p.IsOutbound == false) {
 
@@ -159,6 +158,7 @@ func (l *LossComputer) OnFlowPacket(p common.Packet) {
 	}
 }
 
+// helper functions
 // use map instead of list, 
 // interval packet lost
 func (l *LossComputer) ifSeqInLostPacket(seq int) bool {
@@ -182,12 +182,12 @@ func (l *LossComputer) ExtractSeqNum(p common.Packet) int {
 
 
 
-// name used to register proc in main.go
+// Must implement: name used to register proc in main.go
 func (l *LossComputer) Pubs() []events.Topic {
 	return []events.Topic{"zoom_loss"}
 }
 
-// variabled dumped after porcessing
+// Must implement: variabled dumped after porcessing
 func (l *LossComputer) Teardown() {
 	l.Publish("zoom_loss", struct {
 		Header    common.FiveTuple
