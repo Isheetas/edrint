@@ -25,22 +25,23 @@ func main() {
 	rules := GetClassificationRules()
 	manager.RegisterProc(processor.NewHeaderClassifer(rules))
 
+	// Add name of tf and the function (algorithm) calculating the metric
 	teleManager := processor.NewTelemetryManager()
 	teleManager.AddTFToClass("zoomtcp", telemetry.NewTCPRetransmit(1000))
 	teleManager.AddTFToClass("zoomtcp", telemetry.NewTCPRTT())
 	teleManager.AddTFToClass("zoomudp", NewLossComputer(1000))
 	//teleManager.AddTFToClass("zoomudp", NewJitterComputer(1000))
 	teleManager.AddTFToClass("zoomudp", NewPPSComputer(1000))
-
-	
 	//teleManager.AddTFToClass("amazonprime", telemetry.NewFlowSummary())
 	//teleManager.AddTFToClass("amazonprime", telemetry.NewHTTPChunkDetector(100))
-	//teleManager.AddTFToClass("zoomtcp", NewLossComputer())
+
 
 
 
 	manager.RegisterProc(teleManager)
 
+
+	// Add process that will be computed, name used for event topic
 	manager.RegisterProc(processor.NewDumper(fmt.Sprintf("./files/dumps/%s.json.log",
 		filepath.Base(viper.GetString("packets.source"))),
 		[]events.Topic{

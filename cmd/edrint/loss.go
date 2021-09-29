@@ -180,10 +180,14 @@ func (l *LossComputer) ExtractSeqNum(p common.Packet) int {
 	
 }
 
+
+
+// name used to register proc in main.go
 func (l *LossComputer) Pubs() []events.Topic {
 	return []events.Topic{"zoom_loss"}
 }
 
+// variabled dumped after porcessing
 func (l *LossComputer) Teardown() {
 	l.Publish("zoom_loss", struct {
 		Header    common.FiveTuple
@@ -191,7 +195,7 @@ func (l *LossComputer) Teardown() {
 		ListLoss  []float64
 		
 	}{
-		l.GetHeader(),
+		l.GetHeader(),			//these are the attributes that are dumped in the log files in cmd/edrint/files/dumps
 		l.TotalLoss,
 		l.ListLoss,
 	})
